@@ -1,0 +1,28 @@
+# Secrets / runtime state (proxy credentials + ID mappings)
+/data/proxies.csv
+/data/assignments.csv
+/data/assignments.tmp
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual envs / env files
+.venv/
+venv/
+env/
+.env
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
