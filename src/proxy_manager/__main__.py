@@ -17,7 +17,8 @@ async def main():
     host = cfg.get("host", "127.0.0.1")
     store = Store(ROOT / cfg["proxies_file"], ROOT / cfg["assignments_file"])
 
-    runner = web.AppRunner(make_app(store))
+    t_host, _, t_port = cfg.get("health_target", "1.1.1.1:443").rpartition(":")
+    runner = web.AppRunner(make_app(store, (t_host, int(t_port))))
     await runner.setup()
     await web.TCPSite(runner, host, cfg["assign_port"]).start()
     socks = await asyncio.start_server(make_handler(store), host, cfg["socks_port"])

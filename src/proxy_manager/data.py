@@ -87,5 +87,15 @@ class Store:
             self._save()
             return "success"
 
+    def release(self, id_):
+        """Returns 'success' or 'unknown-id'. The proxy goes back to the free pool."""
+        with self._lock:
+            p = self.by_id.pop(id_, None)
+            if p is None:
+                return "unknown-id"
+            self.free.append(p)
+            self._save()
+            return "success"
+
     def get(self, id_):
         return self.by_id.get(id_)

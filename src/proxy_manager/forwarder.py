@@ -1,4 +1,7 @@
 import asyncio
+import ipaddress
+import struct
+import time
 
 
 async def _pipe(r, w):
@@ -64,6 +67,28 @@ async def _connect_upstream(proxy, addr_bytes):
     except BaseException:
         w.close()
         raise
+
+
+def encode_addr(host, port):
+    """SOCKS5 ATYP+ADDR+PORT bytes for a host string (IPv4/IPv6/domain)."""
+    try:
+        ip = ipaddress.ip_address(host)
+        head = (b"" if ip.version == 4 else b"") + ip.packed
+    except ValueError:
+        h = host.encode()
+        head = b"" + bytes([len(h)]) + h
+    return head + struct.pack(">H", port)
+
+
+async def check_proxy(proxy, host, port):
+    """Opens a tunnel through the proxy to host:port. Returns (ok, latency_ms, error)."""
+    t = time.monotonic()
+    try:
+        _, w = await _connect_upstream(proxy, encode_addr(host, port))
+    except Exception as e:
+        return False, None, str(e) or type(e).__name__
+    w.close()
+    return True, round((time.monotonic() - t) * 1000), None
 
 
 def make_handler(store):
