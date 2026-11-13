@@ -1,0 +1,5 @@
+host = "127.0.0.1"
+assign_port = 8080   # HTTP: POST /assign {"ID": "XYZ"}
+socks_port = 1080    # SOCKS5 entry point; clients authenticate with username = ID
+proxies_file = "data/proxies.csv"
+assignments_file = "data/assignments.csv"
