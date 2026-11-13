@@ -1,6 +1,6 @@
 from aiohttp import web
 
-CODES = {"success": 200, "id-already-asssigned": 409, "no-available-proxies": 503}
+CODES = {"success": 200, "id-already-assigned": 409, "no-available-proxies": 503}
 
 
 def make_app(store):

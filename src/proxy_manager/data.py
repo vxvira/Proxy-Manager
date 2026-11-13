@@ -76,10 +76,10 @@ class Store:
         os.replace(tmp, self.assignments_file)
 
     def assign(self, id_):
-        """Returns 'success', 'id-already-asssigned' or 'no-available-proxies'."""
+        """Returns 'success', 'id-already-assigned' or 'no-available-proxies'."""
         with self._lock:
             if id_ in self.by_id:
-                return "id-already-asssigned"
+                return "id-already-assigned"
             if not self.free:
                 return "no-available-proxies"
             p = self.free.pop(random.randrange(len(self.free)))
